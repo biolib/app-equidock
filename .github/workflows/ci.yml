@@ -18,7 +18,7 @@ jobs:
                     fetch-depth: 2
 
             -   name: Build docker image
-                run: docker build -f equidock_public/Dockerfile -t $LOCAL_DOCKER_TAG equidock/
+                run: docker build -f equidock_public/Dockerfile -t $LOCAL_DOCKER_TAG equidock_public/
 
             -   name: Setup Python
                 uses: actions/setup-python@v2
