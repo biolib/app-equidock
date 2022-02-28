@@ -1,0 +1,9 @@
+# python==3.9.10
+rdkit-pypi
+numpy
+torch==1.10.2
+dgl-cu111
+biopandas==0.2.8
+POT==0.7.0
+dgllife==0.2.8
+joblib==1.1.0
