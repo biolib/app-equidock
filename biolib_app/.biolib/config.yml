@@ -1,37 +1,25 @@
-name: CI
+biolib_version: 2
 
-on: push
+modules:
+    main:
+        image: 'local-docker://app-equidock:latest'
+        command: ""
+        input_files:
+            - COPY / /
+        output_files:
+            - COPY /t000_.e2e.pdb/ /
+            - COPY /output.md /
+        source_files: []
+        gpu: required
 
-env:
-    BIOLIB_LOG: debug
-    BIOLIB_PROJECT_URI: biolib-debugging/equidock-ci-test
-    LOCAL_DOCKER_TAG: app-equidock:latest
+arguments:
+    -
+        default_value: /input.fa
+        description: 'Enter sequence(s) in FASTA format: '
+        key: '--fasta'
+        key_value_separator: '='
+        required: true
+        type: text-file
 
-jobs:
-    build-and-publish:
-        name: Build Docker image and publish if on main
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v2
-                with:
-                    fetch-depth: 2
-
-            -   name: Build docker image
-                run: docker build -f equidock_public/Dockerfile -t $LOCAL_DOCKER_TAG equidock/
-
-            -   name: Setup Python
-                uses: actions/setup-python@v2
-                with:
-                    python-version: 3.8.6
-
-            -   name: Install BioLib CLI
-                run: pip3 install pybiolib
-
-            -   name: Publish new version to BioLib if on main branch
-                if: ${{ github.ref == 'refs/heads/main' }}
-                run: biolib push $BIOLIB_PROJECT_URI --path biolib_app
-                env:
-                    BIOLIB_TOKEN: ${{ secrets.BIOLIB_TOKEN }}
-
+main_output_file: /output.md
 
